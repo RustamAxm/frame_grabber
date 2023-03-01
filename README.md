@@ -11,6 +11,13 @@ poetry install
 ```
 Script use example 
 ```
-poetry run python3 <script_name>
+poetry run python <script_name>
 ```
 In [grabber_example](grabber_example.py) simple image plot
+
+### if u have problems with poetry
+[requirements.txt](requirements.txt)
+```
+numpy~=1.24.2
+matplotlib~=3.7.0
+```
