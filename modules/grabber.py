@@ -65,7 +65,7 @@ class FrameGrabber:
         buffer = self.queue_.get()
         self.queue_.task_done()
 
-        self.img = np.frombuffer(self._unpack_image(buffer), dtype=np.uint16).reshape(self.Height, self.Width)
+        self.img = np.frombuffer(self.unpack_image(buffer), dtype=np.uint16).reshape(self.Height, self.Width)
 
         img_cut_up = self.img[0:int(self.Height / 2), 0:self.Width]
         img_cut_down = self.img[int(self.Height / 2):self.Height, 0:self.Width]
@@ -119,7 +119,7 @@ class FrameGrabber:
             time.sleep(0.05)
             self._q_clear()
 
-    def _unpack_image(self, buffer_in):
+    def unpack_image(self, buffer_in):
         pOutputBitDepth = ctypes.c_uint32(self.BitDepth)
         pStrideSize = ctypes.c_uint32(self.Width * 2)
         logger.debug(f'buffer_in len = {len(buffer_in)}')
@@ -148,7 +148,7 @@ class FrameGrabber:
         return tmp_buffer
 
     def _prep_settings(self):
-        self.dll.VCECLB_GetPredefinedTapConfig(TapConfigPredefined.VCECLB_TapConfig_4TapInterLR,
+        self.dll.VCECLB_GetPredefinedTapConfig(TapConfigPredefined.VCECLB_TapConfig_8TapInterLR,
                                                 ctypes.byref(self.m_RawPixelInfoEx.cameraData.TapConfig))
         
         self.dll.VCECLB_PrepareEx.argtypes = [ctypes.c_void_p, ctypes.c_char, ctypes.POINTER(VCECLB_CameraDataEx)]
