@@ -9,6 +9,17 @@ git clone https://github.com/RustamAxm/frame_grabber.git
 cd frame_grabber
 poetry install
 ```
+### Edit config.yaml
+```yaml
+in_dir: '.'
+out_dir: '.'
+
+#camera settings
+Width: 1024
+Height: 1024
+BitDepth: 10
+Packed: 1
+```
 ### Grab data from card
 Script use example 
 ```
@@ -18,7 +29,7 @@ In [grabber_example](grabber_example.py) simple image plot
 ### Unpack raw data
 Helpful util for unpacking raw data to raw [grabber_unpack](grabber_unpack.py)
 ```
-python .\grabber_unpack.py source_dir out_dir
+python .\grabber_unpack.py config.yaml
 ```
 example:
 ```
