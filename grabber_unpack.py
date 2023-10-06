@@ -8,6 +8,7 @@ import logging
 import glob
 import os
 import errno
+import yaml
 
 from modules.grabber import FrameGrabber
 from helpers.loggin_helper import set_logging
@@ -40,27 +41,25 @@ def save_unpacked(name, buffer):
 
 if __name__ == '__main__':
     try:
-        source_dir = sys.argv[1]
+        source_config = sys.argv[1]
     except IndexError:
-        source_dir = r'raw_data'
+        source_config = r'config.yaml'
 
-    try:
-        out_dir = sys.argv[2]
-    except IndexError:
-        out_dir = 'unpacked'
+    with open(source_config, 'r') as yamlfile:
+        config = yaml.safe_load(yamlfile)
 
-    dir_ = 'raw_data'
     files = []
-    for file in glob.glob(f'{source_dir}/**/*.raw', recursive=True):
+    for file in glob.glob(f'{config["in_dir"]}/**/*.raw', recursive=True):
         if file:
             files.append(file)
 
-    grab = FrameGrabber(Width=2048, Height=1152, BitDepth=10, Packed=1)
+    grab = FrameGrabber(Width=config["Width"],
+                        Height=config["Height"],
+                        BitDepth=config["BitDepth"],
+                        Packed=config["Packed"])
 
     for filename in files:
         in_buffer = read_raw_to_buffer(filename)
         unpacked_buf = grab.unpack_image(in_buffer)
         logger.info(f'in buffer len = {len(in_buffer)}, unpacked buffer len = {len(unpacked_buf)}')
-        save_unpacked(out_dir + '/' + filename[:-4] + '_unpacked.raw', unpacked_buf)
-
-
+        save_unpacked(config['out_dir'] + '/' + filename[:-4] + '_unpacked.raw', unpacked_buf)

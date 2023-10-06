@@ -1,0 +1,8 @@
+in_dir: ''
+out_dir: ''
+
+#camera settings
+Width: 1024
+Height: 1024
+BitDepth: 10
+Packed: 1
