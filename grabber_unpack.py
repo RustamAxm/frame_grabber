@@ -62,4 +62,4 @@ if __name__ == '__main__':
         in_buffer = read_raw_to_buffer(filename)
         unpacked_buf = grab.unpack_image(in_buffer)
         logger.info(f'in buffer len = {len(in_buffer)}, unpacked buffer len = {len(unpacked_buf)}')
-        save_unpacked(config['out_dir'] + '/' + filename[:-4] + '_unpacked.raw', unpacked_buf)
+        save_unpacked(config['out_dir'] + os.sep + filename[:-4] + '_unpacked.raw', unpacked_buf)
