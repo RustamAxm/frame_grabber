@@ -11,8 +11,9 @@ poetry install
 ```
 ### Edit config.yaml
 ```yaml
-in_dir: '.'
-out_dir: '.'
+in_dir: 'packed'
+out_dir: 'unpacked'
+without_lib: true
 
 #camera settings
 Width: 1024
