@@ -14,6 +14,7 @@ import yaml
 
 from modules.grabber import FrameGrabber
 from helpers.loggin_helper import set_logging
+from multiprocessing import Process
 
 logger = logging.getLogger('Unpack RAW')
 set_logging(logger)
@@ -137,12 +138,16 @@ def unpack_raw(ibuffer, config):
     return obuffer
 
 
+def convert_image(filename, config):
+    in_buffer = read_raw_to_buffer(filename)
+    unpacked_buf = unpack_raw(in_buffer, config)
+    logger.info(f'in buffer len = {len(in_buffer)}, unpacked buffer len = {len(unpacked_buf)}')
+    save_unpacked(config['out_dir'] + os.sep + filename[:-4] + '_unpacked.raw', unpacked_buf)
+
+
 def use_without_dll(config, files):
     for filename in files:
-        in_buffer = read_raw_to_buffer(filename)
-        unpacked_buf = unpack_raw(in_buffer, config)
-        logger.info(f'in buffer len = {len(in_buffer)}, unpacked buffer len = {len(unpacked_buf)}')
-        save_unpacked(config['out_dir'] + os.sep + filename[:-4] + '_unpacked.raw', unpacked_buf)
+        Process(target=convert_image, args=(filename, config)).start()
 
 
 def main():
